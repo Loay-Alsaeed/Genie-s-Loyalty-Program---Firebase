@@ -5,7 +5,7 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import Home from "./Pages/Home";
 import Auth from "./Pages/Auth";
 import NotFound from "./Pages/NotFound";
-import LeaderBoard from "./Pages/leaderboard";
+import LeaderBoard from "./Pages/LeaderBoard";
 import BattleBase from "./Pages/BattleBase";
 
 function App() {
