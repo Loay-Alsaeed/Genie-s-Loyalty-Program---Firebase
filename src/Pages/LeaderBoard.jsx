@@ -53,7 +53,7 @@ const LeaderBoard = () => {
                                 </div>
                                 <div className="text-center mb-2">
                                     <p className="font-bold text-sm">{sortedUsers[1].name}</p>
-                                    <p className="text-xs text-muted-foreground">{sortedUsers[1].email}</p>
+                                    {/* <p className="text-xs text-muted-foreground">{sortedUsers[1].email}</p> */}
                                 </div>
                                 <div className="px-4 py-2 rounded-full bg-gradient-to-r from-slate-500/20 to-slate-600/20 border border-slate-500/30">
                                     <p className="text-lg font-bold text-slate-300">{sortedUsers[1].score}</p>
@@ -74,7 +74,7 @@ const LeaderBoard = () => {
                                 </div>
                                 <div className="text-center mb-2">
                                     <p className="font-bold text-base">{sortedUsers[0].name}</p>
-                                    <p className="text-xs text-muted-foreground">{sortedUsers[0].email}</p>
+                                    {/* <p className="text-xs text-muted-foreground">{sortedUsers[0].email}</p> */}
                                 </div>
                                 <div className="px-5 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-500/40 shadow-lg shadow-amber-500/20">
                                     <p className="text-xl font-bold text-amber-400">{sortedUsers[0].score}</p>
@@ -95,7 +95,7 @@ const LeaderBoard = () => {
                                 </div>
                                 <div className="text-center mb-2">
                                     <p className="font-bold text-sm">{sortedUsers[2].name}</p>
-                                    <p className="text-xs text-muted-foreground">{sortedUsers[2].email}</p>
+                                    {/* <p className="text-xs text-muted-foreground">{sortedUsers[2].email}</p> */}
                                 </div>
                                 <div className="px-4 py-2 rounded-full bg-gradient-to-r from-orange-600/20 to-orange-700/20 border border-orange-600/30">
                                     <p className="text-lg font-bold text-orange-400">{sortedUsers[2].score}</p>
@@ -134,7 +134,7 @@ const LeaderBoard = () => {
                                                 YOU
                                             </span>
                                         </div>
-                                        <p className="text-xs text-muted-foreground">{player.email}</p>
+                                        {/* <p className="text-xs text-muted-foreground">{player.email}</p> */}
                                     </div>
                                     <div className="text-right">
                                         <p className="font-bold text-lg text-primary">{player.score}</p>
@@ -158,7 +158,7 @@ const LeaderBoard = () => {
                                     </div>
                                     <div className="flex-1">
                                         <p className="font-bold text-sm">{player.name}</p>
-                                        <p className="text-xs text-muted-foreground">{player.email}</p>
+                                        {/* <p className="text-xs text-muted-foreground">{player.email}</p> */}
                                     </div>
                                     <div className="text-right">
                                         <p className="font-bold text-lg text-primary">{player.score}</p>
