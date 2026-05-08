@@ -531,7 +531,7 @@ const Admin = () => {
     return (
         <>
 
-            <div className="m-auto max-w-5xl min-h-screen text-foreground font-sans">
+            <div className="m-auto max-w-5xl min-h-screen text-foreground">
                 <div className="pt-4 px-5 bg-background ">
                     <Header />
                 </div>

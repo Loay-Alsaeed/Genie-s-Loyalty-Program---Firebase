@@ -57,11 +57,19 @@ const Auth = () => {
             return;
         }
 
+        const trimmedPhone = phone.trim();
+        const phoneRegex = /^(077|078|079)\d{7}$/;
+        if (!phoneRegex.test(trimmedPhone)) {
+            setError("Phone number must be 10 digits and start with 077, 078, or 079.");
+            setLoading(false);
+            return;
+        }
+
         const result = await register({
             Name: name,
             Email: email,
             Password: password,
-            Phone: phone
+            Phone: trimmedPhone
         });
         if (result !== true) {
             setError(result || "This email is already registered.");
@@ -74,7 +82,7 @@ const Auth = () => {
     };
 
     return (
-        <section className="flex flex-col min-h-screen bg-background text-foreground font-sans">
+        <section className="flex flex-col min-h-screen bg-background text-foreground ">
             <div className="flex items-center justify-center flex-1 px-5 py-12">
                 <div className="w-full max-w-md">
                     <div className="p-6 md:p-8 rounded-2xl bg-card border border-border shadow-md">
