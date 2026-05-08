@@ -291,11 +291,11 @@ const EventsSection = () => {
                 <div className="flex items-center gap-3 text-xs font-medium text-muted-foreground w-full">
                     <div className="flex items-center gap-1">
                       <Icon icon="solar:map-point-bold" className="size-4 text-emerald-400" />
-                      <span>{event.location || "Location TBA"}</span>
+                      <span>{event.location}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Icon icon="solar:calendar-bold" className="size-4 text-amber-400" />
-                      <span>{event.dateTime || "Date/Time TBA"}</span>
+                      <span>{event.dateTime}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Icon icon="solar:users-group-rounded-bold" className="size-4 text-sky-400" />
