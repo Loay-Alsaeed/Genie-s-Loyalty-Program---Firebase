@@ -12,7 +12,7 @@ const Customer = () => {
 
     return(
         <>
-            <div className="flex flex-col min-h-screen bg-background text-background font-sans max-w-5xl m-auto">
+            <div className="flex flex-col min-h-screen bg-background text-background max-w-5xl m-auto">
                 <div className="pt-2 px-5 pb-6 ">
                     <Header/>
                     <HeroSection/>

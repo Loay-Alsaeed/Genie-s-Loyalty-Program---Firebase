@@ -11,18 +11,18 @@ const LandingPage = () => {
           <div className="flex items-center gap-3">
             <img src="/logo.jpeg" alt="Genie logo" className="h-14 w-auto" />
             <div>
-              <h1 className="text-xl font-bold font-heading">Genie Loyalty Program</h1>
+              <h1 className="text-xl font-bold ">Genie Loyalty Program</h1>
               <p className="text-xs text-muted-foreground">Boardgame Community Rewards</p>
             </div>
           </div>
 
-          <Link
+          {/* <Link
             to="/auth"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-background font-semibold hover:opacity-90 transition-opacity"
           >
             <Icon icon="solar:login-2-bold" className="size-5" />
             Login
-          </Link>
+          </Link> */}
         </header>
 
         <section className="relative overflow-hidden rounded-3xl border border-primary/30 bg-linear-to-br from-card via-card to-accent/35 p-6 md:p-10 mb-10">

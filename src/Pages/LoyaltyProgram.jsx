@@ -92,16 +92,16 @@ const DataTable = ({ headers, rows }) => (
 const LoyaltyProgram = () => {
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-background text-foreground font-sans max-w-5xl m-auto">
+      <div className="flex flex-col min-h-screen bg-background text-foreground m-auto">
         <div className=" px-5 pb-10">
           {/* <Header /> */}
 
-          <div className="flex items-center justify-between mt-6">
-              <Link to={"/dashboard"} className="size-10 rounded-full bg-white/20 text-foreground flex items-center justify-center">
-                  <Icon icon="solar:arrow-left-linear" className="size-6" />
+          <div className="flex items-center justify-start gap-4 mt-6">
+              <Link to={"/dashboard"} className="size-9 rounded-full bg-white/20 text-foreground flex items-center justify-center">
+                  <Icon icon="solar:arrow-left-linear" className="size-5" />
               </Link>
-              <h1 className="text-xl font-bold font-heading">Loyalty Program</h1>
-              <div className="size-10" />
+              <h1 className="text-md font-bold font-heading">Genie Loyalty Program Overview</h1>
+             
           </div>
 
 
@@ -117,9 +117,9 @@ const LoyaltyProgram = () => {
                       Loyalty Program
                     </Pill>
                   </div> */}
-                  <h1 className="text-2xl md:text-3xl font-bold font-heading tracking-tight">
+                  {/* <h1 className="text-2xl md:text-3xl font-bold font-heading tracking-tight">
                     Genie Loyalty Program Overview
-                  </h1>
+                  </h1> */}
                   <p className="text-sm md:text-base text-muted-foreground max-w-3xl">
                     This page explains the full rules of the Genie Loyalty Program—how you earn points, rewards, vouchers,
                     and the benefits of membership.
