@@ -9,8 +9,8 @@ const Header = () => {
     return (
 
         <header className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-                <img src="/logo.jpeg" alt="Genie logo" className="h-16 w-22" />
+            <div className="flex items-center gap-3 m-auto py-2">
+                <img src="/logo2.jpeg" alt="Genie logo" className="h-14 w-40" />
                 {/* <div>
                     <h1 className="text-xl font-bold font-heading">{user.displayName || "unknow"}</h1>
                     <p className="text-xs text-primary">{user.score || 0} XP</p>

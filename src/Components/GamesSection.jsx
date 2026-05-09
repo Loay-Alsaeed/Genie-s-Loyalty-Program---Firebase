@@ -84,10 +84,10 @@ const GamesSection = () => {
                                             <Icon icon="solar:users-group-rounded-bold" className="size-4 text-emerald-400" />
                                             <span>45 Active</span>
                                         </div> */}
-                                        <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                                        {/* <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                                             <Icon icon="solar:calendar-bold" className="size-4 text-amber-400" />
                                             <span className="text-primary">{game.schedule || "Schedule TBD"}</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

@@ -49,7 +49,7 @@ const Admin = () => {
         name: "",
         imageUrl: "",
         description: "",
-        schedule: ""
+        // schedule: ""
     });
 
     // Prize form state
@@ -219,7 +219,7 @@ const Admin = () => {
                     name: gameForm.name,
                     imageUrl: gameForm.imageUrl,
                     description: gameForm.description,
-                    schedule: gameForm.schedule,
+                    // schedule: gameForm.schedule,
                     updatedAt: new Date().toISOString()
                 });
                 showNotification("Game updated successfully!", "success");
@@ -230,7 +230,7 @@ const Admin = () => {
                     name: gameForm.name,
                     imageUrl: gameForm.imageUrl,
                     description: gameForm.description,
-                    schedule: gameForm.schedule,
+                    // schedule: gameForm.schedule,
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 });
@@ -1029,7 +1029,7 @@ const Admin = () => {
                                             required
                                         />
                                     </div>
-                                    <div className="mb-4">
+                                    {/* <div className="mb-4">
                                         <label className="block mb-2 text-sm font-semibold">Schedule (e.g. Fri - 7PM)</label>
                                         <input
                                             type="text"
@@ -1039,7 +1039,7 @@ const Admin = () => {
                                             placeholder="Fri - 7PM"
                                             required
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="flex gap-2">
                                         <button
                                             type="submit"
