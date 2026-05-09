@@ -30,7 +30,7 @@ const PublicEventsSection = () => {
   }, []);
 
   return (
-    <section className="mt-10">
+    <section className="mb-10">
       <div className="flex items-center justify-between mb-4 gap-3">
         <h3 className="text-lg font-bold font-heading text-foreground">
           Upcoming Events

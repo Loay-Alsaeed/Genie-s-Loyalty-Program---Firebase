@@ -9,7 +9,7 @@ const LandingPage = () => {
       <div className="max-w-6xl mx-auto px-5 py-6 md:py-10">
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpeg" alt="Genie logo" className="h-14 w-auto" />
+            <img src="/logo2.jpeg" alt="Genie logo" className="h-14 w-auto" />
             <div>
               <h1 className="text-xl font-bold ">Genie Loyalty Program</h1>
               <p className="text-xs text-muted-foreground">Boardgame Community Rewards</p>
@@ -68,8 +68,8 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <GamesSection />
           <PublicEventsSection />
+          <GamesSection />
         </section>
       </div>
     </div>
