@@ -315,7 +315,7 @@ const LoyaltyProgram = () => {
                 </ul>
               </SectionCard>
 
-              <SectionCard icon="solar:card-bold" title="Membership System">
+              {/* <SectionCard icon="solar:card-bold" title="Membership System">
                 <p>
                   Membership price: <Highlight tone="default">10 JOD per month</Highlight>.
                 </p>
@@ -353,9 +353,9 @@ const LoyaltyProgram = () => {
                     </div>
                   </div>
                 </div>
-              </SectionCard>
+              </SectionCard> */}
 
-              <SectionCard
+              {/* <SectionCard
                 icon="solar:gift-bold"
                 title="Points Redemption System (Rewards)"
                 className="md:col-span-2"
@@ -374,7 +374,7 @@ const LoyaltyProgram = () => {
                 <p className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-xs md:text-sm text-muted-foreground">
                   The more points a player collects, the better the voucher value they can redeem, encouraging continuous play and spending.
                 </p>
-              </SectionCard>
+              </SectionCard> */}
             </div>
 
             {/* <div className="mt-8 rounded-2xl border border-dashed border-border/60 bg-muted/15 px-5 py-4 text-center text-sm text-muted-foreground">

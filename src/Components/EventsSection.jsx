@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { Icon } from "@iconify/react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { runTransaction } from "firebase/firestore";
-
+import { sortEventsBySerial } from "../utils/sortEvents";
+import { FcMoneyTransfer } from "react-icons/fc";
 const EventsSection = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
@@ -28,15 +29,14 @@ const EventsSection = () => {
     const fetchEvents = async () => {
       try {
         const eventsRef = collection(db, "events");
-        const q = query(eventsRef, orderBy("dateTime", "asc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(eventsRef);
   
         const list = [];
-        snapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
+        snapshot.forEach((docSnap) => {
+          list.push({ id: docSnap.id, ...docSnap.data() });
         });
   
-        setEvents(list);
+        setEvents(sortEventsBySerial(list));
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -78,13 +78,12 @@ const EventsSection = () => {
     const fetchEvents = async () => {
       try {
         const eventsRef = collection(db, "events");
-        const q = query(eventsRef, orderBy("dateTime", "asc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(eventsRef);
         const list = [];
-        snapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
+        snapshot.forEach((docSnap) => {
+          list.push({ id: docSnap.id, ...docSnap.data() });
         });
-        setEvents(list);
+        setEvents(sortEventsBySerial(list));
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
@@ -305,6 +304,12 @@ const EventsSection = () => {
                           : "Slots not set"}
                       </span>
                     </div>
+                    {event.entryFee && (
+                      <div className="flex items-center gap-1.5">
+                        <FcMoneyTransfer className="size-4 text-amber-400" />
+                        <span>{event.entryFee || "0"} JD</span>
+                      </div>
+                    )}
                 </div>
               </div>
             ))}
