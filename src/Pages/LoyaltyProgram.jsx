@@ -121,8 +121,8 @@ const LoyaltyProgram = () => {
                     Genie Loyalty Program Overview
                   </h1> */}
                   <p className="text-sm md:text-base text-muted-foreground max-w-3xl">
-                    This page explains the full rules of the Genie Loyalty Program—how you earn points, rewards, vouchers,
-                    and the benefits of membership.
+                    Collect Genie Points and redeem them for rewards in our store! Learn how to earn points through
+                    purchases, events, and tournaments—and climb the monthly and yearly leaderboards.
                   </p>
                 </div>
 
@@ -141,21 +141,22 @@ const LoyaltyProgram = () => {
               {/* KPI widgets */}
               <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <div className="rounded-2xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm">
-                  <p className="text-xs text-muted-foreground">Points Value</p>
+                  <p className="text-xs text-muted-foreground">Purchase Rate</p>
                   <p className="mt-1 text-sm md:text-base font-semibold">
-                    1 JOD = <Highlight>100 points</Highlight>
+                    1 JOD = <Highlight>5 points</Highlight>
                   </p>
                 </div>
-                {/* <div className="rounded-2xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm">
-                  <p className="text-xs text-muted-foreground">بطولات شهرية</p>
-                  <p className="mt-1 text-sm md:text-base font-semibold">
-                    تقريبًا <Highlight>6</Highlight> بطولات
-                  </p>
-                </div> */}
                 <div className="rounded-2xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm">
-                  <p className="text-xs text-muted-foreground">Redemption</p>
+                  <p className="text-xs text-muted-foreground">Ways to Earn</p>
                   <p className="mt-1 text-sm md:text-base font-semibold">
-                  <Highlight>100 points</Highlight> = 1 JOD store credit                  </p>
+                    Purchases &amp; <Highlight>Events</Highlight>
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm sm:col-span-2 lg:col-span-1">
+                  <p className="text-xs text-muted-foreground">Leaderboards</p>
+                  <p className="mt-1 text-sm md:text-base font-semibold">
+                    Monthly &amp; <Highlight>Yearly</Highlight> rewards
+                  </p>
                 </div>
               </div>
           </section>
@@ -163,124 +164,109 @@ const LoyaltyProgram = () => {
               {/* Cards grid */}
               <section className="mt-8">
             <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
-              <SectionCard icon="ph:coins-bold" title="Points System (Genie Points)">
+              <SectionCard icon="ph:coins-bold" title="Genie Points" className="md:col-span-2">
                 <p>
-                  Every <Highlight>1 JOD</Highlight> spent equals <Highlight>100 points</Highlight>.
+                  Collect Genie Points and redeem them for rewards in our store!
                 </p>
-                <p>
-                  Redemption: <Highlight>100 points = 1 JOD</Highlight> store credit.
-                </p>
-                <p className="text-muted-foreground text-sm">
-                  The goal is to make calculations easy and motivate players to keep playing and spending.
-                </p>
-              </SectionCard>
+                <p className="font-semibold text-foreground">There are 2 ways to earn Genie Points:</p>
 
-              <SectionCard icon="ph:trophy-bold" title="Tournament Points">
-                <p>There are around 6 tournaments every month.</p>
                 <div className="grid gap-4 pt-1 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold tracking-wide text-muted-foreground">
-                      Registration fees
+                  <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3 space-y-2">
+                    <p className="font-semibold text-foreground">1. Buy Games</p>
+                    <p className="text-sm text-muted-foreground">
+                      Every purchase you make at Board Games Genie earns you Genie Points. The more you shop, the more
+                      points you collect, bringing you closer to exciting rewards and exclusive bonuses.
                     </p>
-                    <ul className="space-y-1.5 pr-4 text-sm md:text-base">
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        Members: <Highlight tone="success">Free</Highlight>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        Non‑members: <Highlight tone="default">3 JOD</Highlight>
-                      </li>
-                    </ul>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold tracking-wide text-muted-foreground">
-                      Points earned
+                  <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3 space-y-2">
+                    <p className="font-semibold text-foreground">2. Join Our Events &amp; Tournaments</p>
+                    <p className="text-sm text-muted-foreground">
+                      Take part in our events and tournaments to earn Genie Points while having fun. Whether you join,
+                      compete, or achieve great results, you&apos;ll be rewarded for being an active member of our community.
                     </p>
-                    <ul className="space-y-1.5 pr-4 text-sm md:text-base">
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        Participation: <Highlight tone="default">20 points</Highlight>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        Round win: <Highlight tone="default">15 points</Highlight>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        3rd place: <Highlight tone="default">100 points</Highlight>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        2nd place: <Highlight tone="default">200 points</Highlight>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-primary/60" />
-                        1st place: <Highlight tone="default">300 points</Highlight>
-                      </li>
-                    </ul>
                   </div>
+                </div>
+
+                <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 space-y-2">
+                  <p>
+                    💡 No matter how you earn your points, they all count toward our monthly and yearly leaderboards!
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Every month and every year, the players with the most Genie Points receive bonus points and exclusive
+                    rewards, so every point you earn gets you one step closer to becoming a{" "}
+                    <Highlight>Genie Champion</Highlight>.
+                  </p>
                 </div>
               </SectionCard>
 
-              <SectionCard icon="solar:calendar-bold" title="Event Points">
-                <p>About 5 events are held every month.</p>
-                <ul className="space-y-1.5 pr-4 pt-1 text-sm md:text-base">
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-primary/60" />
-                    Event participation: <Highlight tone="default">40 points</Highlight>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-primary/60" />
-                    Bringing a new friend: <Highlight tone="default">50 points</Highlight>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-primary/60" />
-                    If the friend becomes a member: <Highlight>+200 points</Highlight>
-                  </li>
-                </ul>
-                <p className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-xs md:text-sm text-muted-foreground">
-                  Referral bonus is only given if the friend has never joined any previous event or tournament.
-                </p>
-              </SectionCard>
-
-              <SectionCard icon="solar:bag-bold" title="Purchase Points">
+              <SectionCard icon="solar:bag-bold" title="Earning Points Through Purchases" className="md:col-span-2">
                 <p>
-                  Every <Highlight tone="default">1 JOD</Highlight> spent in store earns{" "}
-                  <Highlight tone="default">5 points</Highlight>.
+                  Every purchase at Board Game Genie earns you Genie Points.
                 </p>
+                <p>
+                  For every <Highlight>1 JOD</Highlight> you spend, you&apos;ll receive Genie Points that are automatically
+                  added to your account. The more you shop, the more points you collect, which you can later redeem for
+                  store rewards.
+                </p>
+
                 <div className="pt-1">
                   <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
-                    Examples
+                    Points are earned as follows:
                   </p>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <div className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-sm">
-                      Spend 20 JOD → <Highlight tone="default">100 points</Highlight>
-                    </div>
-                    <div className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-sm">
-                      Spend 50 JOD → <Highlight tone="default">250 points</Highlight>
-                    </div>
-                  </div>
+                  <DataTable
+                    headers={["Spends", "Points Earned"]}
+                    rows={[
+                      ["1 JOD", "5 Points"],
+                      ["10 JOD", "50 Points"],
+                      ["20 JOD", "100 Points"],
+                      ["50 JOD", "250 Points"],
+                    ]}
+                  />
                 </div>
-              </SectionCard>
 
-              <SectionCard icon="solar:fire-bold" title="Monthly Purchase Streak">
                 <p>
-                  If a customer spends <Highlight tone="default">50 JOD or more in a month</Highlight>, a streak starts
-                  and they receive monthly bonus points as long as they maintain it.
+                  To reward our regular customers, we also offer monthly spending bonuses. If you spend{" "}
+                  <Highlight tone="default">50 JOD or more in a month</Highlight>, you&apos;ll receive extra bonus points.
+                  Keep your streak going each month to unlock even bigger bonuses!
                 </p>
+
                 <DataTable
-                  headers={["Month", "Bonus"]}
+                  headers={["Consecutive Month", "Bonus Points"]}
                   rows={[
-                    ["Month 1", "+100 points"],
-                    ["Month 2", "+200 points"],
-                    ["Month 3", "+300 points"],
-                    ["Month 4+", "+400 points"],
+                    ["Month 1", "+150 Points"],
+                    ["Month 2", "+250 Points"],
+                    ["Month 3", "+400 Points"],
+                    ["Month 4+", "+500 Points every month"],
                   ]}
                 />
-                <p className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-xs md:text-sm text-muted-foreground">
-                  If spending drops below 50 JOD in any month, the streak is broken and restarts from month 1.
+              </SectionCard>
+
+              <SectionCard icon="ph:trophy-bold" title="Earning Points Through Events & Tournaments" className="md:col-span-2">
+                <p>
+                  Joining our events and tournaments is another great way to earn Genie Points while having fun with the
+                  community.
                 </p>
+                <p>
+                  You&apos;ll earn points simply for participating, and you can collect even more by winning matches,
+                  placing in the top rankings, or inviting new players to join us. The more active you are, the more Genie
+                  Points you&apos;ll earn!
+                </p>
+
+                <div className="pt-1">
+                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
+                    Points are earned as follows:
+                  </p>
+                  <DataTable
+                    headers={["Achievement", "Points"]}
+                    rows={[
+                      ["Participation", "30 Points"],
+                      ["Round Win", "25 Points"],
+                      ["3rd Place", "100 Points"],
+                      ["2rd Place", "200 Points"],
+                      ["1rd Place", "300 Points"],
+                    ]}
+                  />
+                </div>
               </SectionCard>
 
               <SectionCard icon="solar:medal-ribbons-star-bold" title="Monthly Top Player Reward">
@@ -313,67 +299,6 @@ const LoyaltyProgram = () => {
                     Trophy + shout‑out on social media
                   </li>
                 </ul>
-              </SectionCard>
-
-              <SectionCard icon="solar:card-bold" title="Membership System">
-                <p>
-                  Membership price: <Highlight tone="default">10 JOD per month</Highlight>.
-                </p>
-                <div className="grid gap-4 pt-1 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold tracking-wide text-muted-foreground">
-                      Membership benefits
-                    </p>
-                    <ul className="space-y-1.5 pr-4 text-sm md:text-base">
-                      <li className="flex items-start gap-2">
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
-                        Free access to all tournaments and events
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
-                        10% discount in the store
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
-                        +10% extra points on everything
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
-                        Members‑only tournaments
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold tracking-wide text-muted-foreground">
-                      Membership points example
-                    </p>
-                    <div className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-sm">
-                      Spend 50 JOD = 250 base points + 25 membership bonus (10%) ={" "}
-                      <Highlight>275 points</Highlight>
-                    </div>
-                  </div>
-                </div>
-              </SectionCard>
-
-              <SectionCard
-                icon="solar:gift-bold"
-                title="Points Redemption System (Rewards)"
-                className="md:col-span-2"
-              >
-                <p>Players can redeem their points for in‑store vouchers:</p>
-                <DataTable
-                  headers={["Points", "Reward"]}
-                  rows={[
-                    ["500 points", "5 JOD voucher"],
-                    ["1000 points", "10 JOD voucher"],
-                    ["2000 points", "25 JOD voucher"],
-                    ["3000 points", "40 JOD voucher"],
-                    ["5000 points", "75 JOD voucher"],
-                  ]}
-                />
-                <p className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-xs md:text-sm text-muted-foreground">
-                  The more points a player collects, the better the voucher value they can redeem, encouraging continuous play and spending.
-                </p>
               </SectionCard>
             </div>
 

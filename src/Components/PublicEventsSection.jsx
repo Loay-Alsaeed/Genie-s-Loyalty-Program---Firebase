@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 import { db } from "../firebase";
+import { sortEventsBySerial } from "../utils/sortEvents";
+import { FcMoneyTransfer } from "react-icons/fc";
+
 
 const PublicEventsSection = () => {
   const [events, setEvents] = useState([]);
@@ -12,13 +15,12 @@ const PublicEventsSection = () => {
     const fetchEvents = async () => {
       try {
         const eventsRef = collection(db, "events");
-        const q = query(eventsRef, orderBy("dateTime", "asc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(eventsRef);
         const list = [];
-        snapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
+        snapshot.forEach((docSnap) => {
+          list.push({ id: docSnap.id, ...docSnap.data() });
         });
-        setEvents(list);
+        setEvents(sortEventsBySerial(list));
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
@@ -94,6 +96,12 @@ const PublicEventsSection = () => {
                       : "Slots not set"}
                   </span>
                 </div>
+                {event.entryFee && (
+                      <div className="flex items-center gap-1.5">
+                        <FcMoneyTransfer className="size-4 text-amber-400" />
+                        <span>{event.entryFee || "0"} JD</span>
+                      </div>
+                    )}
               </div>
             </div>
           ))}

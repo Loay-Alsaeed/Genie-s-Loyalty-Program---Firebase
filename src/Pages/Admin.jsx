@@ -10,10 +10,14 @@ import {
     deleteDoc,
     doc,
     query,
-    orderBy
+    orderBy,
+    writeBatch
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { sortEventsBySerial } from "../utils/sortEvents";
 import { Icon } from "@iconify/react";
+import { FcMoneyTransfer } from "react-icons/fc";
+
 
 const Admin = () => {
     const { user } = useAuth();
@@ -83,8 +87,12 @@ const Admin = () => {
         description: "",
         location: "",
         dateTime: "",
-        availableSlots: 0
+        availableSlots: 0,
+        entryFee: 0
     });
+    const [eventsOrderDirty, setEventsOrderDirty] = useState(false);
+    const [draggedEventId, setDraggedEventId] = useState(null);
+    const [savingEventOrder, setSavingEventOrder] = useState(false);
 
     useEffect(() => {
         if (user?.role === "Admin") {
@@ -171,20 +179,73 @@ const Admin = () => {
         setLoading(true);
         try {
             const eventsRef = collection(db, "events");
-            const q = query(eventsRef, orderBy("dateTime", "asc"));
-            const snapshot = await getDocs(q);
+            const snapshot = await getDocs(eventsRef);
             const list = [];
-            snapshot.forEach((doc) => {
+            snapshot.forEach((docSnap) => {
                 list.push({
-                    id: doc.id,
-                    ...doc.data()
+                    id: docSnap.id,
+                    ...docSnap.data()
                 });
             });
-            setEvents(list);
+            setEvents(sortEventsBySerial(list));
+            setEventsOrderDirty(false);
         } catch (error) {
             showNotification("Error fetching events", "error");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleEventDragStart = (e, eventId) => {
+        setDraggedEventId(eventId);
+        e.dataTransfer.effectAllowed = "move";
+    };
+
+    const handleEventDragOver = (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    };
+
+    const handleEventDrop = (e, targetEventId) => {
+        e.preventDefault();
+        if (!draggedEventId || draggedEventId === targetEventId) {
+            setDraggedEventId(null);
+            return;
+        }
+
+        setEvents((prev) => {
+            const list = [...prev];
+            const fromIndex = list.findIndex((ev) => ev.id === draggedEventId);
+            const toIndex = list.findIndex((ev) => ev.id === targetEventId);
+            if (fromIndex === -1 || toIndex === -1) return prev;
+
+            const [moved] = list.splice(fromIndex, 1);
+            list.splice(toIndex, 0, moved);
+            return list;
+        });
+        setEventsOrderDirty(true);
+        setDraggedEventId(null);
+    };
+
+    const handleSaveEventOrder = async () => {
+        setSavingEventOrder(true);
+        try {
+            const batch = writeBatch(db);
+            events.forEach((event, index) => {
+                const eventRef = doc(db, "events", event.id);
+                batch.update(eventRef, {
+                    serial: index + 1,
+                    updatedAt: new Date().toISOString()
+                });
+            });
+            await batch.commit();
+            setEvents((prev) => prev.map((event, index) => ({ ...event, serial: index + 1 })));
+            setEventsOrderDirty(false);
+            showNotification("Event order saved successfully!", "success");
+        } catch (error) {
+            showNotification("Error saving event order", "error");
+        } finally {
+            setSavingEventOrder(false);
         }
     };
 
@@ -343,10 +404,15 @@ const Admin = () => {
                     location: eventForm.location,
                     dateTime: eventForm.dateTime,
                     availableSlots: Number(eventForm.availableSlots) || 0,
+                    entryFee: Number(eventForm.entryFee) || 0,
                     updatedAt: new Date().toISOString()
                 });
                 showNotification("Event updated successfully!", "success");
             } else {
+                const maxSerial = events.reduce(
+                    (max, event) => Math.max(max, typeof event.serial === "number" ? event.serial : 0),
+                    0
+                );
                 await addDoc(collection(db, "events"), {
                     title: eventForm.title,
                     imageUrl: eventForm.imageUrl,
@@ -354,6 +420,8 @@ const Admin = () => {
                     location: eventForm.location,
                     dateTime: eventForm.dateTime,
                     availableSlots: Number(eventForm.availableSlots) || 0,
+                    entryFee: Number(eventForm.entryFee) || 0,
+                    serial: maxSerial + 1,
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 });
@@ -367,7 +435,8 @@ const Admin = () => {
                 description: "",
                 location: "",
                 dateTime: "",
-                availableSlots: 0
+                availableSlots: 0,
+                entryFee: 0
             });
             fetchEvents();
         } catch (error) {
@@ -508,7 +577,8 @@ const Admin = () => {
             description: event.description || "",
             location: event.location || "",
             dateTime: event.dateTime || "",
-            availableSlots: event.availableSlots || 0
+            availableSlots: event.availableSlots || 0,
+            entryFee: event.entryFee || 0
         });
         setShowEventForm(true);
     };
@@ -635,12 +705,12 @@ const Admin = () => {
                                                     </div>
                                                     
                                                 </div>
-                                                <div className="flex items-center gap-3 mt-3">
+                                                {/* <div className="flex items-center gap-3 mt-3">
                                                     <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                                                         <Icon icon="solar:calendar-bold" className="size-4 text-amber-400" />
                                                         <span>{game.schedule || "Schedule TBD"}</span>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
 
                                             <div className="flex gap-2">
@@ -717,24 +787,43 @@ const Admin = () => {
                     {activeTab === "events" && (
                         <div>
                             <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
-                                <h2 className="text-xl font-bold font-heading">Events Management</h2>
-                                <button
-                                    onClick={() => {
-                                        setEditingEvent(null);
-                                        setEventForm({
-                                            title: "",
-                                            imageUrl: "",
-                                            description: "",
-                                            location: "",
-                                            dateTime: "",
-                                            availableSlots: 0
-                                        });
-                                        setShowEventForm(true);
-                                    }}
-                                    className="px-4 py-2 bg-primary text-secondary-foreground rounded-lg hover:opacity-90 transition-colors font-semibold text-sm"
-                                >
-                                    Add New Event
-                                </button>
+                                <div>
+                                    <h2 className="text-xl font-bold font-heading">Events Management</h2>
+                                    {events.length > 1 && (
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            Drag events to reorder display
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="flex gap-2 flex-wrap">
+                                    {eventsOrderDirty && (
+                                        <button
+                                            onClick={handleSaveEventOrder}
+                                            disabled={savingEventOrder}
+                                            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:opacity-90 transition-colors font-semibold text-sm disabled:opacity-50"
+                                        >
+                                            {savingEventOrder ? "Saving..." : "Save Order"}
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => {
+                                            setEditingEvent(null);
+                                            setEventForm({
+                                                title: "",
+                                                imageUrl: "",
+                                                description: "",
+                                                location: "",
+                                                dateTime: "",
+                                                availableSlots: 0,
+                                                entryFee: 0
+                                            });
+                                            setShowEventForm(true);
+                                        }}
+                                        className="px-4 py-2 bg-primary text-secondary-foreground rounded-lg hover:opacity-90 transition-colors font-semibold text-sm"
+                                    >
+                                        Add New Event
+                                    </button>
+                                </div>
                             </div>
 
                             {loading && events.length === 0 ? (
@@ -744,7 +833,27 @@ const Admin = () => {
                             ) : (
                                 <div className="space-y-4">
                                     {events.map((event) => (
-                                        <div key={event.id} className="flex gap-4 p-4 rounded-xl bg-card border border-border">
+                                        <div
+                                            key={event.id}
+                                            onDragOver={handleEventDragOver}
+                                            onDrop={(e) => handleEventDrop(e, event.id)}
+                                            className={`flex gap-4 p-4 rounded-xl bg-card border transition-all ${
+                                                draggedEventId === event.id
+                                                    ? "opacity-50 border-primary border-dashed"
+                                                    : eventsOrderDirty
+                                                        ? "border-dashed border-emerald-500/50"
+                                                        : "border-border"
+                                            }`}
+                                        >
+                                            <div
+                                                draggable
+                                                onDragStart={(e) => handleEventDragStart(e, event.id)}
+                                                onDragEnd={() => setDraggedEventId(null)}
+                                                className="flex items-center shrink-0 text-muted-foreground cursor-grab active:cursor-grabbing"
+                                                title="Drag to reorder"
+                                            >
+                                                <Icon icon="mdi:drag-vertical" width="24" height="24" />
+                                            </div>
                                             <div className="w-20 h-20 rounded-2xl bg-primary/10 shrink-0 overflow-hidden flex items-center justify-center">
                                                 {event.imageUrl ? (
                                                     <img
@@ -783,6 +892,11 @@ const Admin = () => {
                                                                 ? `${event.availableSlots} slots`
                                                                 : "Slots not set"}
                                                         </span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        {/* <Icon icon="" className="size-4 text-amber-400" /> */}
+                                                        <FcMoneyTransfer className="size-4 text-amber-400" />
+                                                        <span>{event.entryFee || "0"}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -907,88 +1021,89 @@ const Admin = () => {
                         </div>
                     )}
 
-{activeTab === "bookings" && (
-  <div>
-    {/* Header + Filter */}
-    <div className="flex justify-between items-center mb-6 gap-3 flex-wrap">
-      <h2 className="text-xl font-bold font-heading">Event Bookings</h2>
+                    {/* Bookings Tab */}
+                    {activeTab === "bookings" && (
+                    <div>
+                        {/* Header + Filter */}
+                        <div className="flex justify-between items-center mb-6 gap-3 flex-wrap">
+                        <h2 className="text-xl font-bold font-heading">Event Bookings</h2>
 
-      <div className="flex items-center gap-3">
-        
-        <select
-          id="eventFilter"
-          className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          value={selectedEventId || ""}
-          onChange={(e) => setSelectedEventId(e.target.value || null)}
-        >
-          <option value="">All Events</option>
-          {events.map((event) => (
-            <option key={event.id} value={event.id}>
-              {event.title || event.id}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
+                        <div className="flex items-center gap-3">
+                            
+                            <select
+                            id="eventFilter"
+                            className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            value={selectedEventId || ""}
+                            onChange={(e) => setSelectedEventId(e.target.value || null)}
+                            >
+                            <option value="">All Events</option>
+                            {events.map((event) => (
+                                <option key={event.id} value={event.id}>
+                                {event.title || event.id}
+                                </option>
+                            ))}
+                            </select>
+                        </div>
+                        </div>
 
-    {loading ? (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">Loading bookings...</p>
-      </div>
-    ) : (
-      <>
-        {(() => {
-          const filteredBookings = selectedEventId
-            ? bookings.filter((booking) => booking.eventId === selectedEventId)
-            : bookings;
+                        {loading ? (
+                        <div className="text-center py-12">
+                            <p className="text-muted-foreground">Loading bookings...</p>
+                        </div>
+                        ) : (
+                        <>
+                            {(() => {
+                            const filteredBookings = selectedEventId
+                                ? bookings.filter((booking) => booking.eventId === selectedEventId)
+                                : bookings;
 
-          if (filteredBookings.length === 0) {
-            return (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">لا يوجد بيانات</p>
-              </div>
-            );
-          }
+                            if (filteredBookings.length === 0) {
+                                return (
+                                <div className="text-center py-12">
+                                    <p className="text-muted-foreground">لا يوجد بيانات</p>
+                                </div>
+                                );
+                            }
 
-          return (
-            <div className="overflow-x-auto">
-              <table className="w-full bg-card rounded-lg overflow-hidden border border-border">
-                <thead className="bg-secondary">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Event</th>
-                    <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Name</th>
-                    <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Phone</th>
-                    <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Created At</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBookings.map((booking) => (
-                    <tr key={booking.id} className="border-t border-border">
-                      <td className="px-4 py-3 text-sm">
-                        {booking.eventTitle || booking.eventId || "-"}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        {booking.name || "-"}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {booking.phone || "-"}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground">
-                        {booking.createdAt
-                          ? new Date(booking.createdAt).toLocaleString()
-                          : "-"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })()}
-      </>
-    )}
-  </div>
-)}
+                            return (
+                                <div className="overflow-x-auto">
+                                <table className="w-full bg-card rounded-lg overflow-hidden border border-border">
+                                    <thead className="bg-secondary">
+                                    <tr>
+                                        <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Event</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Name</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Phone</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-sm text-secondary-foreground">Created At</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {filteredBookings.map((booking) => (
+                                        <tr key={booking.id} className="border-t border-border">
+                                        <td className="px-4 py-3 text-sm">
+                                            {booking.eventTitle || booking.eventId || "-"}
+                                        </td>
+                                        <td className="px-4 py-3 text-sm">
+                                            {booking.name || "-"}
+                                        </td>
+                                        <td className="px-4 py-3 text-sm text-muted-foreground">
+                                            {booking.phone || "-"}
+                                        </td>
+                                        <td className="px-4 py-3 text-xs text-muted-foreground">
+                                            {booking.createdAt
+                                            ? new Date(booking.createdAt).toLocaleString()
+                                            : "-"}
+                                        </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                                </div>
+                            );
+                            })()}
+                        </>
+                        )}
+                    </div>
+                    )}
 
                     {/* Game Form Modal */}
                     {showGameForm && (
@@ -1322,6 +1437,25 @@ const Admin = () => {
                                             required
                                         />
                                     </div>
+
+                                    <div className="mb-4">
+                                        <label className="block mb-2 text-sm font-semibold">Entry Fee</label>
+                                        <input
+                                            type="number"
+                                            value={eventForm.entryFee}
+                                            onChange={(e) =>
+                                                setEventForm({
+                                                    ...eventForm,
+                                                    entryFee: e.target.value
+                                                })
+                                            }
+                                            className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                            min="0"
+                                            required
+                                        />
+                                    </div>
+
+
                                     <div className="flex gap-2">
                                         <button
                                             type="submit"
@@ -1341,7 +1475,8 @@ const Admin = () => {
                                                     description: "",
                                                     location: "",
                                                     dateTime: "",
-                                                    availableSlots: 0
+                                                    availableSlots: 0,
+                                                    entryFee: 0
                                                 });
                                             }}
                                             className="flex-1 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:opacity-80 transition-colors font-semibold"
