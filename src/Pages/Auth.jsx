@@ -10,7 +10,11 @@ const Auth = () => {
     const [phone, setPhone] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const { login, register } = useAuth();
+    const { login, register, forgotPassword  } = useAuth();
+    const [showForgot, setShowForgot] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [forgotMsg, setForgotMsg] = useState("");
+    const [forgotLoading, setForgotLoading] = useState(false);
     const navigate = useNavigate();
 
 
@@ -81,6 +85,23 @@ const Auth = () => {
         navigate("/dashboard");
     };
 
+
+    const handleForgotPassword = async (e) => {
+        console.log("handleForgotPassword");
+        e.preventDefault();
+        setForgotLoading(true);
+        setForgotMsg("");
+
+        const result = await forgotPassword(forgotEmail);
+        console.log(result);
+        if (result === true) {
+            setForgotMsg("تم إرسال رابط لتغيير كلمة المرور إلى بريدك الإلكتروني.");
+        } else {
+            setForgotMsg(result);
+        }
+        setForgotLoading(false);
+    };
+
     return (
         <section className="flex flex-col min-h-screen bg-background text-foreground ">
             <div className="flex items-center justify-center flex-1 px-5 py-12">
@@ -129,6 +150,7 @@ const Auth = () => {
                         )}
 
                         {activeTab == "signin" ? (
+                            <>
                             <form onSubmit={handleSignIn} className="space-y-4">
                                 <div>
                                     <label className="block mb-2 text-sm font-semibold">Email</label>
@@ -142,7 +164,7 @@ const Auth = () => {
                                             setEmail(e.target.value);
                                             setError("");
                                         }}
-                                    />
+                                        />
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-semibold">Password</label>
@@ -156,16 +178,56 @@ const Auth = () => {
                                         required
                                         placeholder="**********"
                                         className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-foreground placeholder:text-muted-foreground transition-all"
-                                    />
+                                        />
                                 </div>
                                 <button
                                     disabled={loading}
                                     type="submit"
                                     className="w-full bg-primary text-background rounded-lg p-3 font-semibold shadow-md hover:opacity-90 active:opacity-80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
+                                    >
                                     {loading ? "Please Wait..." : "Login"}
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowForgot(!showForgot);
+                                        setForgotMsg("");
+                                    }}
+                                    className="text-sm text-muted-foreground hover:underline mt-3 block text-center w-full"
+                                    >
+                                    نسيت كلمة المرور؟
+                                </button>
+                               
+
                             </form>
+                             {forgotMsg && (
+                                <p className="text-sm text-center text-foreground">{forgotMsg}</p>
+                                )}
+                                {showForgot && (
+                                    <form onSubmit={handleForgotPassword} className="mt-4 space-y-3 border-t border-border pt-4">
+                                        <p className="text-sm text-muted-foreground text-center">
+                                        بنبعثلك رابط لتغيير كلمة المرور على إيميلك
+                                        </p>
+                                        <input
+                                        value={forgotEmail}
+                                        onChange={(e) => setForgotEmail(e.target.value)}
+                                        type="email"
+                                        required
+                                        placeholder="example@gmail.com"
+                                        className="w-full px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+                                        />
+                                        
+                                        <button
+                                        disabled={forgotLoading}
+                                        type="submit"
+                                        className="w-full bg-primary text-background rounded-lg p-2 font-semibold hover:opacity-90 transition-all disabled:opacity-50"
+                                        >
+                                        {forgotLoading ? "جاري الإرسال..." : "إرسال رابط التغيير"}
+                                        </button>
+                                    </form>
+                                )}
+                            </>
+                            
                         ) : (
                             <form onSubmit={handleSignUp} className="space-y-4">
                                 <div>
