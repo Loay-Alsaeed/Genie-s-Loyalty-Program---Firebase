@@ -4,7 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail   
 } from "firebase/auth";
 import { 
   doc, 
@@ -239,8 +240,28 @@ export const AuthProvider = ({ children }) => {
     }
 };
 
+const forgotPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email, {
+      url: window.location.origin + "/auth",
+    });
+    return true;
+  } catch (err) {
+    console.error("Reset password error:", err);
+    let errorMessage = "حدث خطأ، حاول مرة أخرى";
+    if (err.code === "auth/user-not-found") {
+      return true;
+    } else if (err.code === "auth/invalid-email") {
+      errorMessage = "الإيميل غير صحيح";
+    } else if (err.code === "auth/too-many-requests") {
+      errorMessage = "محاولات كثيرة، حاول لاحقاً";
+    }
+    return errorMessage;
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ user, prizes, loading, login, logout, register, usersScore }}>
+    <AuthContext.Provider value={{ user, prizes, loading, login, logout, register, usersScore, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

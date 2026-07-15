@@ -268,7 +268,24 @@ const LoyaltyProgram = () => {
                   />
                 </div>
               </SectionCard>
-
+              <SectionCard icon="ph:trophy-bold" title="Earning Points Through Referrals" className="md:col-span-2">
+                <p>
+                  Referral bonus is awarded only if your friends is attending <Highlight>Board Games Genie</Highlight> for the first time and purchases a membership.
+                </p>
+                <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
+                  Points are earned as follows:
+                </p>
+                <div className="pt-1">
+                  <DataTable
+                    headers={["Achievement", "Points"]}
+                    rows={[
+                      ["Participation", "50 Points"],
+                      ["Bring a New Friend", "150 Points"],
+                     
+                    ]}
+                  />
+                </div>
+              </SectionCard>
               <SectionCard icon="solar:medal-ribbons-star-bold" title="Monthly Top Player Reward">
                 <p>At the end of each month, the player with the highest points receives:</p>
                 <ul className="space-y-1.5 pr-4 pt-1 text-sm md:text-base">
@@ -302,12 +319,10 @@ const LoyaltyProgram = () => {
                   </li>
                 </ul>
               </SectionCard>
+             
             </div>
-
-            {/* <div className="mt-8 rounded-2xl border border-dashed border-border/60 bg-muted/15 px-5 py-4 text-center text-sm text-muted-foreground">
-              This overview can later be connected to a live dashboard for tracking points, tournaments, events, purchases,
-              streaks, and leaderboards in real time.
-            </div> */}
+            
+            
           </section>
         </div>
       </div>
