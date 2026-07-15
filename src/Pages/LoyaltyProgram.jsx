@@ -139,7 +139,7 @@ const LoyaltyProgram = () => {
               </div>
 
               {/* KPI widgets */}
-              <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {/* <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <div className="rounded-2xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm">
                   <p className="text-xs text-muted-foreground">Purchase Rate</p>
                   <p className="mt-1 text-sm md:text-base font-semibold">
@@ -158,7 +158,7 @@ const LoyaltyProgram = () => {
                     Monthly &amp; <Highlight>Yearly</Highlight> rewards
                   </p>
                 </div>
-              </div>
+              </div> */}
           </section>
 
               {/* Cards grid */}
@@ -262,8 +262,8 @@ const LoyaltyProgram = () => {
                       ["Participation", "30 Points"],
                       ["Round Win", "25 Points"],
                       ["3rd Place", "100 Points"],
-                      ["2rd Place", "200 Points"],
-                      ["1rd Place", "300 Points"],
+                      ["2nd Place", "200 Points"],
+                      ["1st Place", "300 Points"],
                     ]}
                   />
                 </div>
@@ -278,7 +278,9 @@ const LoyaltyProgram = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="size-1.5 rounded-full bg-primary/60" />
-                    Their name displayed on the <Highlight>Genie Champion</Highlight> board
+                    <span>
+                      Their name displayed on the <Highlight>Genie Champion</Highlight> board
+                    </span>
                   </li>
                 </ul>
               </SectionCard>
@@ -288,7 +290,7 @@ const LoyaltyProgram = () => {
                 <ul className="space-y-1.5 pr-4 pt-1 text-sm md:text-base">
                   <li className="flex items-center gap-2">
                     <span className="size-1.5 rounded-full bg-primary/60" />
-                    <Highlight>+2000 points</Highlight>
+                    <Highlight>+2500 points</Highlight>
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="size-1.5 rounded-full bg-primary/60" />
